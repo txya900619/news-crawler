@@ -1,4 +1,4 @@
-from news_crawler.pipelines import NewsCrawlerPGStoragePipline
+from news_crawler.pipelines import NewsCrawlerPGStoragePipeline
 from news_crawler.utils import get_random_agent
 from news_crawler.items import NewsCrawlerItem
 from scrapy import Spider
@@ -12,7 +12,7 @@ class LibertyTimesNewsSpider(Spider):
 
     def __init__(self, **kwargs):
         super().__init__(name=self.name, **kwargs)
-        self.pg_pipeline: NewsCrawlerPGStoragePipline = None
+        self.pg_pipeline: NewsCrawlerPGStoragePipeline = None
 
     def start_requests(self):
         page_index = 1

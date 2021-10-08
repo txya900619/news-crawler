@@ -1,4 +1,4 @@
-from news_crawler.pipelines import NewsCrawlerPGStoragePipline
+from news_crawler.pipelines import NewsCrawlerPGStoragePipeline
 from news_crawler.items import NewsCrawlerItem
 from scrapy import Spider
 from scrapy.http.request import Request
@@ -13,7 +13,7 @@ class SanlihETelevisionNewsSpider(Spider):
 
     def __init__(self, **kwargs):
         super().__init__(name=self.name, **kwargs)
-        self.pg_pipeline: NewsCrawlerPGStoragePipline = None
+        self.pg_pipeline: NewsCrawlerPGStoragePipeline = None
 
     def parse(self, response):
         news_in_page = response.css(
