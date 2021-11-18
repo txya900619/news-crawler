@@ -7,7 +7,7 @@ A news crawler for Life-Long Learning LM
 |中央社|www.cna.com.tw|cna|
 |中國時報|www.chinatimes.com|ct|
 |三立新聞|www.setn.com|setn|
-
+|華視新聞|news.cts.com.tw|cts|
 ## How to use
 `scrapy crawl <spider_name>`
 
