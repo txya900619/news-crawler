@@ -42,7 +42,7 @@ class CentralNewsAgencyNewsSpider(Spider):
         content = '\n'.join(response.css('div.paragraph p::text').getall()).split(
             '（編輯')[0].split('（譯者')[0]
         keywords = response.xpath(
-            "//meta[@name='keywords']/@content").get()
+            "//meta[@name='keywords']/@content").get() or ""
         published_time = "{}:00+08:00".format(response.xpath(
             "//meta[@itemprop='datePublished']/@content").get()).replace("/", "-")
 
