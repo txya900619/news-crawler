@@ -56,7 +56,8 @@ class SanlihETelevisionNewsSpider(Spider):
         published_time: datetime = response.xpath(
             "//meta[@property='article:published_time']/@content").get()
 
-        if "z" in published_time:
-            published_time.replace("z", "")
+        if "z" in published_time or "Z" in published_time:
+            published_time = published_time.replace("Z", "")
+            published_time = published_time.replace("z", "")
         published_time += "+08:00"
         yield NewsCrawlerItem(title, content, url, section, keywords, datetime.fromisoformat(published_time))

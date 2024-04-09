@@ -41,9 +41,9 @@ class CentralNewsAgencyNewsSpider(Spider):
         url = response.url
         content = '\n'.join(response.css('div.paragraph p::text').getall()).split(
             '（編輯')[0].split('（譯者')[0]
-        keywords = response.xpath(
-            "//meta[@name='keywords']/@content").get() or ""
-        published_time = "{}:00+08:00".format(response.xpath(
-            "//meta[@itemprop='datePublished']/@content").get()).replace("/", "-")
+        keywords = ",".join(response.xpath(
+            "//meta[@property='article:tag']/@content").getall()) or ""
+        published_time = response.xpath(
+            "//meta[@property='article:published_time']/@content").get()
 
         yield NewsCrawlerItem(title, content, url, section, keywords, datetime.fromisoformat(published_time))

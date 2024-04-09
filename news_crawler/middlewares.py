@@ -17,5 +17,6 @@ class RandomUserAgentMiddleware(object):
     # passed objects.
 
     def process_request(self, request, spider):
-        request.headers.setdefault(
-            'User-Agent', get_random_agent()['User-Agent'])
+        user_agent = get_random_agent()['User-Agent']
+        request.headers.setdefault('User-Agent', user_agent)
+        request.headers.setdefault('Dnt', "1")
