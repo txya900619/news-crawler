@@ -39,7 +39,7 @@ class LibertyTimesNewsSpider(Spider):
             page_index += 1
 
     def parse(self, response):
-        title = response.css('div.whitecon h1::text').get()
+        title = response.css('div.whitecon h1::text').get() or response.css('article.article h1::text').get()
         url = response.url
         content = '\n'.join(response.xpath(
             "//div[contains(@class,'text')]/p[not(a) and not(@class)]/text()").getall())
