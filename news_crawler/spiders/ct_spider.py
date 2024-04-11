@@ -50,7 +50,7 @@ class ChinaTimesNewsSpider(Spider):
         section: str = response.xpath(
             "//meta[@property='article:section']/@content").get()
         keywords: str = response.xpath(
-            "//meta[@name='keywords']/@content").get()
+            "//meta[@name='keywords']/@content").get() or ""
         published_time: datetime = response.xpath(
             "//meta[@itemprop='datePublished']/@content").get()
         yield NewsCrawlerItem(title, content, url, section, keywords, datetime.fromisoformat(published_time))

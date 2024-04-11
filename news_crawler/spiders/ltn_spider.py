@@ -46,7 +46,7 @@ class LibertyTimesNewsSpider(Spider):
         section = response.xpath(
             "//meta[@property='article:section']/@content").get()
         keywords = response.xpath(
-            "//meta[@name='keywords']/@content").get()
+            "//meta[@name='keywords']/@content").get() or ""
         published_time = response.xpath(
             "//meta[@property='article:published_time']/@content").get()
         if published_time is None:

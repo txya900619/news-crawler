@@ -46,7 +46,7 @@ class ChineseTelevisionServiceNewsSpider(Spider):
         section: str = response.xpath(
             "//meta[@name='section']/@content").get()
         keywords: str = response.xpath(
-            "//meta[@name='news_keywords']/@content").get()
+            "//meta[@name='news_keywords']/@content").get() or ""
         published_time: datetime = response.xpath(
             "//meta[@name='pubdate']/@content").get()
 
