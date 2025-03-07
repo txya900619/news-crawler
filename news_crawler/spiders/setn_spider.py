@@ -55,6 +55,14 @@ class SanlihETelevisionNewsSpider(Spider):
             "//meta[@name='news_keywords']/@content").get()
         published_time: datetime = response.xpath(
             "//meta[@property='article:published_time']/@content").get()
+        
+        if published_time is None:
+            published_time = response.xpath("//time/@text()").get()
+
+            # 2025/03/07 15:25 to "2025-03-07T15:25:00"
+            published_time = published_time.replace("/", "-")
+            published_time = published_time.replace(" ", "T")
+            published_time += ":00"
 
         if "z" in published_time or "Z" in published_time:
             published_time = published_time.replace("Z", "")

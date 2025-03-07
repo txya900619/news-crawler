@@ -45,5 +45,13 @@ class CentralNewsAgencyNewsSpider(Spider):
             "//meta[@property='article:tag']/@content").getall()) or ""
         published_time = response.xpath(
             "//meta[@property='article:published_time']/@content").get()
+        
+        try:
+            datetime.fromisoformat(published_time)
+        except:
+            published_time = published_time.replace("/", "-")
+            published_time = published_time.replace(" ", "T")
+            published_time += ":00"
+            
 
         yield NewsCrawlerItem(title, content, url, section, keywords, datetime.fromisoformat(published_time))
