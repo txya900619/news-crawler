@@ -82,12 +82,3 @@ class SanlihETelevisionNewsSpider(Spider):
             keywords,
             datetime.fromisoformat(published_time),
         )
-        published_time += "+08:00"
-        yield NewsCrawlerItem(
-            title,
-            content,
-            url,
-            section,
-            keywords,
-            datetime.fromisoformat(published_time),
-        )
