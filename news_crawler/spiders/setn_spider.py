@@ -1,8 +1,10 @@
-from news_crawler.pipelines import NewsCrawlerPGStoragePipeline
-from news_crawler.items import NewsCrawlerItem
+from datetime import datetime
+
 from scrapy import Spider
 from scrapy.http.request import Request
-from datetime import datetime
+
+from news_crawler.items import NewsCrawlerItem
+from news_crawler.pipelines import NewsCrawlerPGStoragePipeline
 
 
 class SanlihETelevisionNewsSpider(Spider):
@@ -16,13 +18,12 @@ class SanlihETelevisionNewsSpider(Spider):
         self.pg_pipeline: NewsCrawlerPGStoragePipeline = None
 
     def parse(self, response):
-        news_in_page = response.css(
-            "div.NewsList h3.view-li-title a")
+        news_in_page = response.css("div.NewsList h3.view-li-title a")
         if not news_in_page:
             return
 
         for news in news_in_page:
-            news_url = news.css('a::attr(href)').extract_first()
+            news_url = news.css("a::attr(href)").extract_first()
             if "https" not in news_url:
                 news_url = response.urljoin(news_url)
 
@@ -44,20 +45,25 @@ class SanlihETelevisionNewsSpider(Spider):
         yield Request(next_page_url, callback=self.parse)
 
     def parse_news(self, response):
-        title: str = response.xpath(
-            "//meta[@property='og:title']/@content").get().split(" | ")[0]
-        content: str = '\n'.join(response.xpath(
-            "//article//p[not(@class)]/text()").getall())
+        title: str = (
+            response.xpath("//meta[@property='og:title']/@content")
+            .get()
+            .split(" | ")[0]
+        )
+        content: str = "\n".join(
+            response.xpath("//article//p[not(@class)]/text()").getall()
+        )
         url: str = response.url
         section: str = response.xpath(
-            "//meta[@property='article:section']/@content").get()
-        keywords: str = response.xpath(
-            "//meta[@name='news_keywords']/@content").get()
+            "//meta[@property='article:section']/@content"
+        ).get()
+        keywords: str = response.xpath("//meta[@name='news_keywords']/@content").get()
         published_time: datetime = response.xpath(
-            "//meta[@property='article:published_time']/@content").get()
-        
+            "//meta[@property='article:published_time']/@content"
+        ).get()
+
         if published_time is None:
-            published_time = response.xpath("//time/@text()").get()
+            published_time = response.css("time::text").get()
 
             # 2025/03/07 15:25 to "2025-03-07T15:25:00"
             published_time = published_time.replace("/", "-")
@@ -68,4 +74,20 @@ class SanlihETelevisionNewsSpider(Spider):
             published_time = published_time.replace("Z", "")
             published_time = published_time.replace("z", "")
         published_time += "+08:00"
-        yield NewsCrawlerItem(title, content, url, section, keywords, datetime.fromisoformat(published_time))
+        yield NewsCrawlerItem(
+            title,
+            content,
+            url,
+            section,
+            keywords,
+            datetime.fromisoformat(published_time),
+        )
+        published_time += "+08:00"
+        yield NewsCrawlerItem(
+            title,
+            content,
+            url,
+            section,
+            keywords,
+            datetime.fromisoformat(published_time),
+        )
