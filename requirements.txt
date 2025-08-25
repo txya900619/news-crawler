@@ -1,4 +1,4 @@
 Scrapy==2.13.3
 psycopg2_binary>=2.9
-requests==2.32.4
+requests==2.32.5
 dataclasses==0.8
